@@ -1,4 +1,4 @@
-# greyscale-bytes
+# testcard-bytes
 
 Accepts any image (the "source") and produces a ".jonty" file containing
 greyscale bytes (0=black, 127=50% grey, 255=white) for a given height
