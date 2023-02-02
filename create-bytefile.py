@@ -49,7 +49,10 @@ if is_interlaced:
 min = 255
 max = 0
 qty_pixels = 0
+text_filename = output_filename.rsplit(".", 1)[0]+".txt"
+
 outfile = open(output_filename, "wb")
+textfile = open(text_filename, "w")
 for y in y_numbers:
     for x in range(max_x):
         pixel = testcard.getpixel((x, y))
@@ -57,12 +60,14 @@ for y in y_numbers:
         if grey > max: max = grey
         if grey < min: min = grey
         outfile.write(grey.to_bytes(1, "big"))
-        qty_pixels += 1
-
+        textfile.write(hex(grey).replace('0x', '').zfill(2)+"\n")
 outfile.close()
+textfile.close()
 print(
   f"[ ] wrote {output_filename} ({qty_pixels} bytes: "
-  f"min={int(min)}, max={max}){'' if is_interlaced else ' not'} interlaced")
+  f"min={int(min)}, max={max}){'' if is_interlaced else ' not'} interlaced"
+)
+print(f"[ ] wrote {text_filename} text/hex file too")
 
 # now test that by reading the bytes back and producing a PNG
 greenscreen = (0, 255, 0 , 255)
