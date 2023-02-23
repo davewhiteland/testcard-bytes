@@ -67,6 +67,7 @@ for y in y_numbers:
         if grey < min: min = grey
         outfile.write(grey.to_bytes(1, "big"))
         textfile.write(hex(grey).replace('0x', '').zfill(2)+"\n")
+        qty_pixels += 1
 outfile.close()
 textfile.close()
 print(
