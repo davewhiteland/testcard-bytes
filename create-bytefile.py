@@ -27,9 +27,9 @@ max_y = int(input_str) if input_str.isdigit() else DEFAULT_MAX_Y
 print(f"[?] want interlaced? [Y/n]\n> ", end="")
 is_interlaced = f"{input().strip().lower()}y".startswith("y")
 
-print(f"[?] Want 8-byte greyscale values? [Y/n]\n> ", end="")
-# note: default is 8-byte, so negate that answer for 7-byte
-is_7_byte = not f"{input().strip().lower()}y".startswith("y")
+print(f"[?] Want 8-bit greyscale values? [Y/n]\n> ", end="")
+# note: default is 8-bit, so negate that answer for 7-bit
+is_7_bit = not f"{input().strip().lower()}y".startswith("y")
 
 output_filename = ""
 if match := re.match(FILENAME_RE, source_filename):
@@ -38,7 +38,7 @@ else:
   output_filename = DEFAULT_OUTPUT_FILENAME
 output_filename += f"-{max_x}-x-{max_y}"
 if is_interlaced: output_filename += "-i"
-if is_7_byte: output_filename += "-7byte"
+if is_7_bit: output_filename += "-7bit"
 output_filename += BYTE_FILE_EXTENSION
 print(f"[?] output filename? [{output_filename}]\n> ", end="")
 output_filename = input().strip() or output_filename 
@@ -51,7 +51,7 @@ y_numbers = [i for i in range(max_y)]
 if is_interlaced:
     y_numbers = [i for i in y_numbers if not i%2] + \
                 [i for i in y_numbers if i%2]
-min = 127 if is_7_byte else 255
+min = 127 if is_7_bit else 255
 max = 0
 qty_pixels = 0
 text_filename = output_filename.rsplit(".", 1)[0]+".txt"
@@ -62,7 +62,7 @@ for y in y_numbers:
     for x in range(max_x):
         pixel = testcard.getpixel((x, y))
         grey = int((pixel[0] + pixel[1] + pixel[2])/3)
-        if is_7_byte: grey = int(grey/2)
+        if is_7_bit: grey = int(grey/2)
         if grey > max: max = grey
         if grey < min: min = grey
         outfile.write(grey.to_bytes(1, "big"))
